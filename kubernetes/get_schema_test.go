@@ -2,6 +2,7 @@ package kubernetes
 
 import (
 	"io"
+	"os"
 	"testing"
 
 	"k8s.io/kube-openapi/pkg/util/proto"
@@ -21,7 +22,7 @@ func Test_resources_getSchema(t *testing.T) {
 	}{
 		{"Test getting schemas from API server don't write to file",
 			fields{
-				kubeconfig: "/Users/pgogia/.kube/config",
+				kubeconfig: os.Getenv("KUBECONFIG"),
 			},
 			nil,
 			false,
