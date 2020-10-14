@@ -2,6 +2,7 @@ package kubernetes
 
 import (
 	"io"
+	"io/ioutil"
 	"os"
 	"testing"
 
@@ -14,6 +15,10 @@ func Test_resources_getSchema(t *testing.T) {
 		cacheJSON  bool
 		rw         io.ReadWriter
 	}
+	file, err := ioutil.TempFile("/tmp/", "test")
+	if err != nil {
+		t.Fatalf("Failed to create tmp file %v\n", err)
+	}
 	tests := []struct {
 		name    string
 		fields  fields
@@ -23,6 +28,9 @@ func Test_resources_getSchema(t *testing.T) {
 		{"Test getting schemas from API server don't write to file",
 			fields{
 				kubeconfig: os.Getenv("KUBECONFIG"),
+				// rw:         new(bytes.Buffer),
+				cacheJSON: true,
+				rw:        file,
 			},
 			nil,
 			false,
